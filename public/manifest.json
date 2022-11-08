@@ -1,6 +1,6 @@
 {
-  "name": "Chrome Extension Boilerplate",
-  "description": "Chrome Extension boilerplate created with React Typescript.",
+  "name": "마이 북마크",
+  "description": "새탭에서 북마크를 자주 찾는 페이지와 폴더별로 정리할 수 있습니다.",
   "manifest_version": 2,
   "version": "1.0.0",
   "icons": {
@@ -30,5 +30,12 @@
         "content.js"
       ]
     }
+  ],
+  "chrome_url_overrides": {
+    "newtab": "popup.html"
+  },
+  "permissions": [
+    "storage",
+    "bookmarks"
   ]
 }
