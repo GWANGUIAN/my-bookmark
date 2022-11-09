@@ -1,0 +1,43 @@
+.page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 127px;
+  height: 133px;
+  background: #F2F2F2;
+  border: 1px solid #D1D1D1;
+  border-radius: 7px;
+  padding: 7px 8px;
+  cursor: pointer;
+}
+
+.page-container .page-header{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 11px;
+}
+
+.page-container .page-header button{
+  background: none;
+}
+
+.page-container .page-name{
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  color: #686868;
+  margin: 12.33px 0 12px 0;
+}
+
+.page-container .page-url{
+  width: 100px;
+  text-align: left;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #C8C8C8;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}

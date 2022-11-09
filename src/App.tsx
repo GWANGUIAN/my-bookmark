@@ -1,24 +1,44 @@
 import * as React from "react";
-import logo from "./logo.svg";
+import "./reset.css";
 import "./App.css";
+import IconSetting from './icons/IconSetting';
+import { allPages, frequentPages } from './mocks';
+import Page from './items/Page';
+import Folder from './items/Folder';
 
 const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <div className='inner-container'>
+        <header>
+          <button><IconSetting /></button>
+        </header>
+        <h2>자주 찾는 페이지</h2>
+        <div className='content-grid'>
+          {frequentPages.map((page, id) => (
+            <Page key={id} {...page}/>
+          ))}
+        </div>
+        <div className='all-page-header'>
+          <h2>전체 페이지</h2>
+          <div className='box-add-button'>
+            <button className='button-add-page'>+ 페이지 추가</button>
+            <button className='button-add-page'>+ 폴더 추가</button>
+          </div>
+        </div>
+        <div className='content-grid'>
+          {allPages.map((page, id) => {
+            if (page.type === 'folder') {
+              return (
+                <Folder key={id} {...page}/>
+              )
+            }
+            return (
+              <Page key={id} {...page}/>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };

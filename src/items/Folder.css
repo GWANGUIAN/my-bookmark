@@ -1,0 +1,42 @@
+.folder-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 127px;
+  height: 133px;
+  background: #D1D1D1;
+  border: 1px solid #D1D1D1;
+  border-radius: 7px;
+  padding: 7px 8px;
+  cursor: pointer;
+}
+
+.folder-container::after {
+  position: absolute;
+  width: 33px;
+  height: 24px;
+  background: inherit;
+  content: "";
+  background: #D1D1D1;
+  border: inherit;
+  border-radius: 7px;
+  left: 12px;
+  top: -12px;
+}
+
+.folder-container .folder-header{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.folder-container .folder-header button{
+  background: none;
+}
+
+.folder-container .folder-name{
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 16px;
+  text-align: center;
+  margin: auto 0 11px 0;
+}

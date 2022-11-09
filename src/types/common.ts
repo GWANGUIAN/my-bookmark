@@ -1,11 +1,13 @@
-export interface BookmarkConfig {
+export interface PageConfig {
+  type: "page";
   name: string;
   url: string;
   icon: string;
 }
 
 export interface FolderConfig {
+  type: "folder";
   name: string;
-  color: string;
-  bookmarks: BookmarkConfig[];
+  color?: string;
+  bookmarks: PageConfig[];
 }
