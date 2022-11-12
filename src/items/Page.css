@@ -22,6 +22,11 @@
   background: none;
 }
 
+.page-container .page-icon{
+  width: 33px;
+  height: 33px;
+}
+
 .page-container .page-name{
   font-weight: 400;
   font-size: 13px;
