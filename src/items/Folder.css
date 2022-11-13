@@ -1,5 +1,11 @@
 .folder-container {
   position: relative;
+  width: 127px;
+  height: 133px;
+  cursor: pointer;
+}
+
+.folder-inner-container {
   display: flex;
   flex-direction: column;
   width: 127px;
@@ -11,7 +17,7 @@
   cursor: pointer;
 }
 
-.folder-container::after {
+.folder-container .folder-polygon {
   position: absolute;
   width: 33px;
   height: 24px;
@@ -22,6 +28,8 @@
   border-radius: 7px;
   left: 12px;
   top: -12px;
+  z-index: -1;
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }
 
 .folder-container .folder-header{
@@ -39,4 +47,15 @@
   line-height: 16px;
   text-align: center;
   margin: auto 0 11px 0;
+}
+
+.folder-container .box-shadow{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 7px;
+  top: 0;
+  left: 0;
+  z-index: -2;
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
 }

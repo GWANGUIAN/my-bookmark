@@ -21,40 +21,73 @@ const Folder = (props: FolderConfig) => {
       ? `${CSS.Transform.toString(transform)} scale(1.05)` 
       : CSS.Transform.toString(transform),
     transition,
-    boxShadow: isDragging ? 'rgba(0, 0, 0, 0.35) 0px 5px 15px' : 'none',
+    zIndex: isDragging
+    ? 10 
+    : 0,
   };
 
   return (
     <div
       className='folder-container'
-      style={
-        color ? (
-          { 
-            ...style,
-            background: color,
-            border: `1px solid ${color}`
-          }
-        ) : (
-          style
-        )
-      }
+      style={style}
       ref={setNodeRef}
       {...attributes}
       {...listeners}
     >
-      <div className='folder-header'>
-        <button>
-          <IconEdit color={'#ffffff'}/>
-        </button>
+      <div
+        className='folder-inner-container'
+        style={
+          color ? (
+            { 
+              background: color,
+              border: `1px solid ${color}`
+            }
+          ) : (
+            {}
+          )
+        }
+      >
+        <div className='folder-header'>
+          <button>
+            <IconEdit color={'#ffffff'}/>
+          </button>
+        </div>
+        <div
+          className='folder-name'
+          style={{
+            color: color ? '#ffffff' : '#686868'
+          }}
+        >
+          {name}
+        </div>
       </div>
       <div
-        className='folder-name'
+        className='folder-polygon'
+        style={
+          color 
+          ? {
+            background: color,
+            border: `1px solid ${color}`,
+            boxShadow: isDragging 
+            ? 'rgba(0, 0, 0, 0.35) 0px 5px 15px' 
+            : '0px 0px 0px 0px' 
+          }
+          : {
+            boxShadow: isDragging 
+            ? 'rgba(0, 0, 0, 0.35) 0px 5px 15px' 
+            : '0px 0px 0px 0px' 
+          }
+        }
+      />
+
+      <div
+        className='box-shadow'
         style={{
-          color: color ? '#ffffff' : '#686868'
+          boxShadow: isDragging 
+            ? 'rgba(0, 0, 0, 0.35) 0px 5px 15px' 
+            : '0px 0px 0px 0px' 
         }}
-      >
-        {name}
-      </div>
+      />
     </div>
   );
 }

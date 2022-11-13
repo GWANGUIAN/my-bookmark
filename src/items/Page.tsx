@@ -22,7 +22,9 @@ const Folder = (props: PageConfig) => {
       ? `${CSS.Transform.toString(transform)} scale(1.05)` 
       : CSS.Transform.toString(transform),
     transition,
-    boxShadow: isDragging ? 'rgba(0, 0, 0, 0.35) 0px 5px 15px' : 'none',
+    zIndex: isDragging
+    ? 10 
+    : 0,
   };
 
   const iconUrl = `https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${url}&size=128`
@@ -47,6 +49,14 @@ const Folder = (props: PageConfig) => {
       <div className='page-url'>
         {url}
       </div>
+      <div
+        className='box-shadow'
+        style={{
+          boxShadow: isDragging 
+            ? 'rgba(0, 0, 0, 0.35) 0px 5px 15px' 
+            : 'none' 
+        }}
+      />
     </div>
   );
 }
