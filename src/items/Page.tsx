@@ -4,6 +4,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { PageConfig } from '../types/common';
 import IconEdit from '../icons/IconEdit';
+import { getFaviconFromUrl } from '../utils/common';
 
 const Folder = (props: PageConfig) => {
   const { name, url, icon, sortIndex } = props;
@@ -27,8 +28,6 @@ const Folder = (props: PageConfig) => {
     : 0,
   };
 
-  const iconUrl = `https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${url}&size=128`
-
   return (
     <div
       className='page-container'
@@ -42,7 +41,7 @@ const Folder = (props: PageConfig) => {
           <IconEdit/>
         </button>
       </div>
-      <img className='page-icon' src={icon || iconUrl}/>
+      <img className='page-icon' src={icon || getFaviconFromUrl(url)}/>
       <div className='page-name'>
         {name}
       </div>
