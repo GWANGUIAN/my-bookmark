@@ -20,10 +20,10 @@ const PageEditModal = (props: Props) => {
     <div className="page-edit-container">
       <div ref={modalRef} className="modal-container">
         <div>
-          <label>이름</label>
-          <input type='text' value={name}/>
-          <label>URL</label>
-          <input type='text' value={url}/>
+          <label className='label-name'>이름</label>
+          <input className='input-name' type='text' value={name}/>
+          <label className='label-url'>URL</label>
+          <input className='input-url' type='text' value={url}/>
           <label>아이콘</label>
           <div></div>
         </div>

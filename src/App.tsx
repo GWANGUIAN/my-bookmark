@@ -1,7 +1,7 @@
 import * as React from "react";
 import "./reset.css";
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import IconSetting from "./icons/IconSetting";
 import {
   allPages as allMockPages,
@@ -82,17 +82,17 @@ const App = () => {
   };
 
   useEffect(() => {
-    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-      if(tabs[0].url !== 'chrome://newtab/') {
-        chrome.tabs.create({ url:'chrome://newtab/' });
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      if (tabs[0].url !== "chrome://newtab/") {
+        chrome.tabs.create({ url: "chrome://newtab/" });
       }
     });
-    chrome.bookmarks.getTree(
-      (results) => {
-        console.log(JSON.stringify(results)); 
-      }
-    )
-  },[])
+    // chrome.bookmarks.getTree(
+    //   (results) => {
+    //     console.log(JSON.stringify(results));
+    //   }
+    // )
+  }, []);
 
   return (
     <div className="container">
