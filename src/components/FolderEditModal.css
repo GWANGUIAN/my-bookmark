@@ -16,6 +16,7 @@
   align-items: center;
   top: 50%;
   left: 50%;
+  width: 300px;
   transform: translate(-50%, -50%);
   background-color: #fff;
   padding: 20px 25px;
@@ -27,6 +28,7 @@
 .folder-edit-container .inner-modal-container {
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 15px;
 }
 

@@ -17,16 +17,42 @@ const PageEditModal = (props: Props) => {
   const [icon, setIcon] = useState(props.icon || getFaviconFromUrl(url));
 
   return (
-    <div className="page-edit-container">
+    <div
+      className="page-edit-container"
+      style={{
+        display: isOpen ? "flex" : "none",
+      }}
+    >
       <div ref={modalRef} className="modal-container">
-        <div>
-          <label className='label-name'>이름</label>
-          <input className='input-name' type='text' value={name}/>
-          <label className='label-url'>URL</label>
-          <input className='input-url' type='text' value={url}/>
-          <label>아이콘</label>
-          <div></div>
+        <div className="inner-modal-container">
+          <label className='box-name'>
+            <span>이름</span>
+            <input 
+              type='text'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </label>
+          <label className='box-url'>
+            <span>URL</span>
+            <input
+              type='text'
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+            />
+          </label>
+          {/* <label>아이콘</label>
+          <div></div> */}
         </div>
+        <button
+          className={
+            name === props.name && url === props.url
+            ? 'btn-save-disabled'
+            : 'btn-save'
+          }
+        >
+          저장
+        </button>
       </div>
     </div>
   );
