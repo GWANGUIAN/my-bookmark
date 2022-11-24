@@ -1,7 +1,7 @@
 import * as React from "react";
 import "./reset.css";
 import "./App.css";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import IconSetting from "./icons/IconSetting";
 import {
   allPages as allMockPages,
@@ -24,12 +24,47 @@ import {
   sortableKeyboardCoordinates,
 } from "@dnd-kit/sortable";
 import { FolderConfig, PageConfig } from "./types/common";
+import SettingModal from "./components/SettingModal";
+import ImportBookmarkModal from "./components/ImportBookmarkModal";
 
 const App = () => {
   const [frequentPages, setFrequentPages] =
     useState<PageConfig[]>(frequentMockPages);
   const [allPages, setAllPages] =
     useState<Array<PageConfig | FolderConfig>>(allMockPages);
+  const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
+  const settingModalRef = useRef<HTMLDivElement>(null);
+  const settingButtonRef = useRef<HTMLButtonElement>(null);
+  const [isImportModalOpen, setIsImportModalOpen] = React.useState(false);
+  const importButtonRef = useRef<HTMLButtonElement>(null);
+  const importModalRef = useRef<HTMLDivElement>(null);
+
+  const handleClickOutside = useCallback(
+    ({ target }: MouseEvent) => {
+      if (
+        !settingModalRef.current!.contains(target as Node) &&
+        !settingButtonRef.current!.contains(target as Node)
+      ) {
+        setIsSettingModalOpen(false);
+      }
+
+      if (
+        !importModalRef.current!.contains(target as Node) &&
+        !importButtonRef.current!.contains(target as Node)
+      ) {
+        setIsImportModalOpen(false);
+      }
+    },
+    [setIsSettingModalOpen]
+  );
+
+  useEffect(() => {
+    window.addEventListener("click", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("click", handleClickOutside);
+    };
+  }, [handleClickOutside]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -87,66 +122,84 @@ const App = () => {
         chrome.tabs.create({ url: "chrome://newtab/" });
       }
     });
-    // chrome.bookmarks.getTree(
-    //   (results) => {
-    //     console.log(JSON.stringify(results));
-    //   }
-    // )
   }, []);
 
   return (
-    <div className="container">
-      <div className="inner-container">
-        <header>
-          <button>
-            <IconSetting />
-          </button>
-        </header>
-        <h2>자주 찾는 페이지</h2>
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEndFrequentPages}
-        >
-          <SortableContext
-            items={allPages.map(({ sortIndex }) => sortIndex)}
-            strategy={rectSortingStrategy}
+    <>
+      <div className="container">
+        <div className="inner-container">
+          <header>
+            <button
+              className="button-setting"
+              ref={settingButtonRef}
+              onClick={() => {
+                setIsSettingModalOpen(true);
+              }}
+              style={{
+                backgroundColor: isSettingModalOpen ? "#c0c0c0" : "transparent",
+              }}
+            >
+              <IconSetting />
+              <SettingModal
+                isOpen={isSettingModalOpen}
+                modalRef={settingModalRef}
+                importButtonRef={importButtonRef}
+                onOpenImportModal={() => {
+                  setIsImportModalOpen(true);
+                }}
+              />
+            </button>
+          </header>
+          <h2>자주 찾는 페이지</h2>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEndFrequentPages}
           >
-            <div className="content-grid">
-              {frequentPages.map((page, id) => (
-                <Page key={id} {...page} />
-              ))}
+            <SortableContext
+              items={allPages.map(({ sortIndex }) => sortIndex)}
+              strategy={rectSortingStrategy}
+            >
+              <div className="content-grid">
+                {frequentPages.map((page, id) => (
+                  <Page key={id} {...page} />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
+          <div className="all-page-header">
+            <h2>전체 페이지</h2>
+            <div className="box-add-button">
+              <button className="button-add-page">+ 페이지 추가</button>
+              <button className="button-add-page">+ 폴더 추가</button>
             </div>
-          </SortableContext>
-        </DndContext>
-        <div className="all-page-header">
-          <h2>전체 페이지</h2>
-          <div className="box-add-button">
-            <button className="button-add-page">+ 페이지 추가</button>
-            <button className="button-add-page">+ 폴더 추가</button>
           </div>
-        </div>
-        <DndContext
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEndAllPages}
-        >
-          <SortableContext
-            items={allPages.map(({ sortIndex }) => sortIndex)}
-            strategy={rectSortingStrategy}
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEndAllPages}
           >
-            <div className="content-grid">
-              {allPages.map((page, id) => {
-                if (page.type === "folder") {
-                  return <Folder key={id} {...page} />;
-                }
-                return <Page key={id} {...page} />;
-              })}
-            </div>
-          </SortableContext>
-        </DndContext>
+            <SortableContext
+              items={allPages.map(({ sortIndex }) => sortIndex)}
+              strategy={rectSortingStrategy}
+            >
+              <div className="content-grid">
+                {allPages.map((page, id) => {
+                  if (page.type === "folder") {
+                    return <Folder key={id} {...page} />;
+                  }
+                  return <Page key={id} {...page} />;
+                })}
+              </div>
+            </SortableContext>
+          </DndContext>
+        </div>
       </div>
-    </div>
+      <ImportBookmarkModal
+        isOpen={isImportModalOpen}
+        modalRef={importModalRef}
+      />
+    </>
   );
 };
 

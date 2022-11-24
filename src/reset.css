@@ -225,6 +225,10 @@ textarea {
   *vertical-align: middle; /* 3 */
 }
 
+button {
+  background: none;
+}
+
 /**
 * Address Firefox 3+ setting 'line-height' on 'input' using '!important' in
 * the UA stylesheet.

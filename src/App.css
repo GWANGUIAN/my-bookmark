@@ -53,3 +53,17 @@ header {
   font-size: 16px;
   color: #686868;
 }
+
+.button-setting{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3px;
+  border-radius: 50%;
+  transition: all 0.2s ease-in-out;
+}
+
+.button-setting:hover{
+  background-color: #c0c0c0;
+}
