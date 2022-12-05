@@ -26,12 +26,11 @@ import {
 import { FolderConfig, PageConfig } from "./types/common";
 import SettingModal from "./components/SettingModal";
 import ImportBookmarkModal from "./components/ImportBookmarkModal";
+import { useChromeStorageSync } from 'use-chrome-storage';
 
 const App = () => {
-  const [frequentPages, setFrequentPages] =
-    useState<PageConfig[]>(frequentMockPages);
-  const [allPages, setAllPages] =
-    useState<Array<PageConfig | FolderConfig>>(allMockPages);
+  const [allPages, setAllPages] = useChromeStorageSync('all',[]) as unknown as [(PageConfig|FolderConfig)[], (data: (PageConfig|FolderConfig)[]) => void];;
+  const [frequentPages, setFrequentPages] = useChromeStorageSync('frequent',[]) as unknown as [PageConfig[], (data: PageConfig[]) => void];
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const settingModalRef = useRef<HTMLDivElement>(null);
   const settingButtonRef = useRef<HTMLButtonElement>(null);
@@ -82,18 +81,16 @@ const App = () => {
     const { active, over } = event;
 
     if (active.id !== over.id) {
-      setFrequentPages((items) => {
-        const oldIndex = items.findIndex(
-          ({ sortIndex }) => sortIndex === active.id
-        );
-        const newIndex = items.findIndex(
-          ({ sortIndex }) => sortIndex === over.id
-        );
-        const newItems = [...items];
-        newItems.splice(oldIndex, 1);
-        newItems.splice(newIndex, 0, items[oldIndex]);
-        return newItems;
-      });
+      const oldIndex = frequentPages.findIndex(
+        ({ sortIndex }) => sortIndex === active.id
+      );
+      const newIndex = frequentPages.findIndex(
+        ({ sortIndex }) => sortIndex === over.id
+      );
+      const newItems = [...frequentPages];
+      newItems.splice(oldIndex, 1);
+      newItems.splice(newIndex, 0, frequentPages[oldIndex]);
+      setFrequentPages(newItems as PageConfig[]);
     }
   };
 
@@ -101,18 +98,16 @@ const App = () => {
     const { active, over } = event;
 
     if (active.id !== over.id) {
-      setAllPages((items) => {
-        const oldIndex = items.findIndex(
-          ({ sortIndex }) => sortIndex === active.id
-        );
-        const newIndex = items.findIndex(
-          ({ sortIndex }) => sortIndex === over.id
-        );
-        const newItems = [...items];
-        newItems.splice(oldIndex, 1);
-        newItems.splice(newIndex, 0, items[oldIndex]);
-        return newItems;
-      });
+      const oldIndex = allPages.findIndex(
+        ({ sortIndex }) => sortIndex === active.id
+      );
+      const newIndex = allPages.findIndex(
+        ({ sortIndex }) => sortIndex === over.id
+      );
+      const newItems = [...allPages];
+      newItems.splice(oldIndex, 1);
+      newItems.splice(newIndex, 0, allPages[oldIndex]);
+      setAllPages(newItems);
     }
   };
 
@@ -122,7 +117,7 @@ const App = () => {
         chrome.tabs.create({ url: "chrome://newtab/" });
       }
     });
-  }, []);
+  }, [allPages]);
 
   return (
     <>
@@ -170,7 +165,10 @@ const App = () => {
           <div className="all-page-header">
             <h2>전체 페이지</h2>
             <div className="box-add-button">
-              <button className="button-add-page">+ 페이지 추가</button>
+              <button className="button-add-page" onClick={()=>{
+                  setAllPages(allMockPages);
+                  setFrequentPages(frequentMockPages);
+                }}>+ 페이지 추가</button>
               <button className="button-add-page">+ 폴더 추가</button>
             </div>
           </div>
