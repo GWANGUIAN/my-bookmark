@@ -2,7 +2,7 @@ import { PageConfig, FolderConfig } from "../types/common";
 
 export const frequentPages: PageConfig[] = [
   { 
-    id: 1,
+    id: '3',
     type: "page",
     name: "구글",
     url: "https://www.google.com",
@@ -10,7 +10,7 @@ export const frequentPages: PageConfig[] = [
     sortIndex: 1,
   },
   {
-    id: 2,
+    id: '4',
     type: "page",
     name: "깃헙",
     url: "https://github.com",
@@ -18,7 +18,7 @@ export const frequentPages: PageConfig[] = [
     sortIndex: 2,
   },
   {
-    id: 3,
+    id: '5',
     type: "page",
     name: "레딧",
     url: "https://www.reddit.com",
@@ -26,7 +26,7 @@ export const frequentPages: PageConfig[] = [
     sortIndex: 3,
   },
   {
-    id: 4,
+    id: '6',
     type: "page",
     name: "인프런",
     url: "https://www.inflearn.com",
@@ -37,12 +37,12 @@ export const frequentPages: PageConfig[] = [
 
 export const allPages: Array<PageConfig | FolderConfig> = [
   { 
-    id: 1,
+    id: '1',
     type: "folder",
     name: "유튜브",
-    bookmarks: [
+    children: [
       {
-        id: 2,
+        id: '2',
         type: "page",
         name: "유튜브 | 노동요",
         icon: "/images/icon-youtube.svg",
@@ -53,7 +53,7 @@ export const allPages: Array<PageConfig | FolderConfig> = [
     sortIndex: 1,
   },
   {
-    id: 3,
+    id: '3',
     type: "page",
     name: "구글",
     url: "https://www.google.com",
@@ -61,7 +61,7 @@ export const allPages: Array<PageConfig | FolderConfig> = [
     sortIndex: 2,
   },
   {
-    id: 4,
+    id: '4',
     type: "page",
     name: "깃헙",
     url: "https://github.com",
@@ -69,7 +69,7 @@ export const allPages: Array<PageConfig | FolderConfig> = [
     sortIndex: 3,
   },
   {
-    id: 5,
+    id: '5',
     type: "page",
     name: "레딧",
     url: "https://www.reddit.com",
@@ -77,7 +77,7 @@ export const allPages: Array<PageConfig | FolderConfig> = [
     sortIndex: 4,
   },
   {
-    id: 5,
+    id: '6',
     type: "page",
     name: "인프런",
     url: "https://www.inflearn.com",
@@ -85,7 +85,7 @@ export const allPages: Array<PageConfig | FolderConfig> = [
     sortIndex: 5,
   },
   {
-    id: 6,
+    id: '7',
     type: "page",
     name: "인프런",
     url: "https://www.inflearn.com",
@@ -93,7 +93,7 @@ export const allPages: Array<PageConfig | FolderConfig> = [
     sortIndex: 6,
   },
   {
-    id: 7,
+    id: '8',
     type: "page",
     name: "인프런",
     url: "https://www.inflearn.com",
@@ -101,7 +101,7 @@ export const allPages: Array<PageConfig | FolderConfig> = [
     sortIndex: 7,
   },
   {
-    id: 8,
+    id: '9',
     type: "page",
     name: "인프런",
     url: "https://www.inflearn.com",
@@ -109,7 +109,7 @@ export const allPages: Array<PageConfig | FolderConfig> = [
     sortIndex: 8,
   },
   {
-    id: 9,
+    id: '10',
     type: "page",
     name: "인프런",
     url: "https://www.inflearn.com",

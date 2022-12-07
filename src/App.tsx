@@ -27,9 +27,11 @@ import { FolderConfig, PageConfig } from "./types/common";
 import SettingModal from "./components/SettingModal";
 import ImportBookmarkModal from "./components/ImportBookmarkModal";
 import { useChromeStorageSync } from 'use-chrome-storage';
+import PageAddModal from './components/PageAddModal';
+import FolderAddModal from './components/FolderAddModal';
 
 const App = () => {
-  const [allPages, setAllPages] = useChromeStorageSync('all',[]) as unknown as [(PageConfig|FolderConfig)[], (data: (PageConfig|FolderConfig)[]) => void];;
+  const [allPages, setAllPages] = useChromeStorageSync('all',[]) as unknown as [(PageConfig|FolderConfig)[], (data: (PageConfig|FolderConfig)[]) => void];
   const [frequentPages, setFrequentPages] = useChromeStorageSync('frequent',[]) as unknown as [PageConfig[], (data: PageConfig[]) => void];
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
   const settingModalRef = useRef<HTMLDivElement>(null);
@@ -37,6 +39,12 @@ const App = () => {
   const [isImportModalOpen, setIsImportModalOpen] = React.useState(false);
   const importButtonRef = useRef<HTMLButtonElement>(null);
   const importModalRef = useRef<HTMLDivElement>(null);
+  const [isPageAddModalOpen, setIsPageAddModalOpen] = useState(false);
+  const addPageButtonRef = useRef<HTMLButtonElement>(null);
+  const addPageModalRef = useRef<HTMLDivElement>(null);
+  const [isFolderAddModalOpen, setIsFolderAddModalOpen] = useState(false);
+  const addFolderButtonRef = useRef<HTMLButtonElement>(null);
+  const addFolderModalRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = useCallback(
     ({ target }: MouseEvent) => {
@@ -52,6 +60,20 @@ const App = () => {
         !importButtonRef.current!.contains(target as Node)
       ) {
         setIsImportModalOpen(false);
+      }
+
+      if (
+        !addPageModalRef.current!.contains(target as Node) &&
+        !addPageButtonRef.current!.contains(target as Node)
+      ) {
+        setIsPageAddModalOpen(false);
+      }
+
+      if (
+        !addFolderModalRef.current!.contains(target as Node) &&
+        !addFolderButtonRef.current!.contains(target as Node)
+      ) {
+        setIsFolderAddModalOpen(false);
       }
     },
     [setIsSettingModalOpen]
@@ -165,11 +187,23 @@ const App = () => {
           <div className="all-page-header">
             <h2>전체 페이지</h2>
             <div className="box-add-button">
-              <button className="button-add-page" onClick={()=>{
-                  setAllPages(allMockPages);
-                  setFrequentPages(frequentMockPages);
-                }}>+ 페이지 추가</button>
-              <button className="button-add-page">+ 폴더 추가</button>
+              <button
+                className="button-add-page"
+                ref={addPageButtonRef}
+                onClick={()=>{
+                  setIsPageAddModalOpen(true);
+                }}>
+                  + 페이지 추가
+              </button>
+              <button
+                className="button-add-page"
+                ref={addFolderButtonRef}
+                onClick={()=>{
+                  setIsFolderAddModalOpen(true);
+                }}
+              >
+                + 폴더 추가
+              </button>
             </div>
           </div>
           <DndContext
@@ -196,6 +230,20 @@ const App = () => {
       <ImportBookmarkModal
         isOpen={isImportModalOpen}
         modalRef={importModalRef}
+      />
+      <PageAddModal
+        isOpen={isPageAddModalOpen}
+        modalRef={addPageModalRef}
+        onClose={() => {
+          setIsPageAddModalOpen(false);
+        }}
+      />
+      <FolderAddModal
+        isOpen={isFolderAddModalOpen}
+        modalRef={addFolderModalRef}
+        onClose={() => {
+          setIsFolderAddModalOpen(false);
+        }}
       />
     </>
   );

@@ -2,56 +2,46 @@ import * as React from "react";
 import { useState } from "react";
 import { useChromeStorageSync } from 'use-chrome-storage';
 import { FolderConfig, PageConfig } from "../types/common";
-import { getFaviconFromUrl } from "../utils/common";
-import "./PageEditModal.css";
+import "./PageAddModal.css";
+import { v4 as uuid } from 'uuid';
 
-interface Props extends PageConfig {
+interface Props {
   isOpen: boolean;
   modalRef: React.RefObject<HTMLDivElement>;
   onClose: () => void;
 }
 
-const PageEditModal = (props: Props) => {
+const PageAddModal = (props: Props) => {
   const { isOpen, modalRef, onClose } = props;
   const [allPages, setAllPages] = useChromeStorageSync('all',[]) as unknown as [(PageConfig|FolderConfig)[], (data: (PageConfig|FolderConfig)[]) => void];
-  const [frequentPages, setFrequentPages] = useChromeStorageSync('frequent',[]) as unknown as [PageConfig[], (data: PageConfig[]) => void];
-  const [name, setName] = useState(props.name);
-  const [url, setUrl] = useState(props.url);
-  const [icon, setIcon] = useState(props.icon || getFaviconFromUrl(url));
+  const [name, setName] = useState('');
+  const [url, setUrl] = useState('');
+  const [icon, setIcon] = useState('');
 
-  const save = () => {
-    const newAllPages = allPages.map((page) => {
-      if (page.id === props.id) {
-        return {
-          ...page,
-          name,
-          url,
-          icon,
-        };
-      }
-      return page;
-    });
+  const add = () => {
 
-    const newFrequentPages = frequentPages.map((page) => {
-      if (page.id === props.id) {
-        return {
-          ...page,
-          name,
-          url,
-          icon,
-        };
+    const newPage: PageConfig = {
+      id: uuid(),
+      name,
+      url,
+      type: 'page',
+      sortIndex: allPages.reduce((acc, page) => {
+        if (page.sortIndex > acc) {
+          return page.sortIndex;
+        }
+        return acc;
       }
-      return page;
-    });
+      , 0) + 1,
+    }
+    const newAllPages = [...allPages, newPage]
 
     setAllPages(newAllPages);
-    setFrequentPages(newFrequentPages);
     onClose();
   };
 
   return (
     <div
-      className="page-edit-container"
+      className="page-add-container"
       style={{
         display: isOpen ? "flex" : "none",
       }}
@@ -79,20 +69,20 @@ const PageEditModal = (props: Props) => {
         </div>
         <button
           onClick={() => {
-            save();
+            add();
           }}
-          disabled={(name === props.name && url === props.url) || !name || !url}
+          disabled={name === '' || url === ''}
           className={
-            (name === props.name && url === props.url) || !name || !url
+            name === '' || url === ''
             ? 'btn-save-disabled'
             : 'btn-save'
           }
         >
-          저장
+          추가
         </button>
       </div>
     </div>
   );
 };
 
-export default PageEditModal;
+export default PageAddModal;

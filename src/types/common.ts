@@ -1,5 +1,5 @@
 export interface PageConfig {
-  id: number;
+  id: string;
   type: "page";
   name: string;
   url: string;
@@ -8,10 +8,10 @@ export interface PageConfig {
 }
 
 export interface FolderConfig {
-  id: number;
+  id: string;
   type: "folder";
   name: string;
   color?: string;
-  bookmarks: PageConfig[];
+  children: PageConfig[];
   sortIndex: number;
 }

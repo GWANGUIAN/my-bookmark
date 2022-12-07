@@ -1,33 +1,40 @@
 import * as React from "react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useChromeStorageSync } from 'use-chrome-storage';
 import { colorArray } from "../constants/colors";
 import { FolderConfig, PageConfig } from "../types/common";
-import "./FolderEditModal.css";
+import "./FolderAddModal.css";
+import { v4 as uuid } from 'uuid';
 
-interface Props extends FolderConfig {
+interface Props {
   isOpen: boolean;
   modalRef: React.RefObject<HTMLDivElement>;
   onClose: () => void;
 }
 
-const FolderEditModal = (props: Props) => {
+const FolderAddModal = (props: Props) => {
   const { isOpen, modalRef, onClose } = props;
   const [allPages, setAllPages] = useChromeStorageSync('all',[]) as unknown as [(PageConfig|FolderConfig)[], (data: (PageConfig|FolderConfig)[]) => void];
-  const [name, setName] = useState(props.name);
-  const [color, setColor] = useState(props.color || "#D1D1D1");
+  const [name, setName] = useState('');
+  const [color, setColor] = useState("#D1D1D1");
 
-  const save = () => {
-    const newAllPages = allPages.map((page) => {
-      if (page.id === props.id) {
-        return {
-          ...page,
-          name,
-          color,
-        };
+  const add = () => {
+
+    const newFolder: FolderConfig = {
+      id: uuid(),
+      name,
+      color,
+      type: 'folder',
+      children: [],
+      sortIndex: allPages.reduce((acc, page) => {
+        if (page.sortIndex > acc) {
+          return page.sortIndex;
+        }
+        return acc;
       }
-      return page;
-    });
+      , 0) + 1,
+    }
+    const newAllPages = [...allPages, newFolder]
 
     setAllPages(newAllPages);
     onClose();
@@ -35,7 +42,7 @@ const FolderEditModal = (props: Props) => {
 
   return (
     <div
-      className="folder-edit-container"
+      className="folder-add-container"
       style={{
         display: isOpen ? "flex" : "none",
       }}
@@ -79,20 +86,20 @@ const FolderEditModal = (props: Props) => {
         </div>
         <button
           onClick={() => {
-            save();
+            add();
           }}
-          disabled={name === props.name && (color === props.color || (!props.color && color === "#D1D1D1"))}
           className={
-            name === props.name && (color === props.color || (!props.color && color === "#D1D1D1"))
+            name === ''
             ? 'btn-save-disabled'
             : 'btn-save'
           }
+          disabled={name === ''}
         >
-          저장
+          추가
         </button>
       </div>
     </div>
   );
 };
 
-export default FolderEditModal;
+export default FolderAddModal;
